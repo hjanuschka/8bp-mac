@@ -20,18 +20,18 @@ final class Line: NSView {
     override func draw(_ dirtyRect: NSRect) {
         
         //Left Bottom
-        self.drawLine(x: 0, y: 0);
+        self.drawLine(x: 10, y: 10);
         //Bottom Center
         self.drawLine(x: frame.size.width/2, y: 0);
         //Bottom Right
-        self.drawLine(x: frame.size.width, y: 0);
+        self.drawLine(x: frame.size.width-10, y: 10);
         
         //Top Left
-        self.drawLine(x: 0, y: frame.size.height);
+        self.drawLine(x: 10, y: frame.size.height-10);
         //Top Middle
         self.drawLine(x: frame.size.width/2, y: frame.size.height);
         //Top Right
-        self.drawLine(x: frame.size.width, y: frame.size.height);
+        self.drawLine(x: frame.size.width-10, y: frame.size.height-10);
         
         
         let circle = NSBezierPath(ovalIn: NSRect(x: (mouse?.x)!-10, y: (mouse?.y)!-10, width: 20, height: 20))
@@ -107,13 +107,20 @@ class ViewController: NSViewController, NSWindowDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         let frame = self.view.frame;
+
         self.Lines = Line(frame: frame)
-        self.Lines?.mouse = CGPoint(x: view.frame.size.height/2, y: view.frame.size.width/2);
+        self.Lines?.mouse = CGPoint(x: view.frame.size.width/2, y: view.frame.size.height/2);
+        
+        
         view.addSubview(self.Lines!)
+        self.Lines?.needsDisplay=true;
+        
         // Do any additional setup after loading the view.
         
         NSApplication.shared().windows.first?.level = Int(CGWindowLevelForKey(.floatingWindow))
         
+        view.layer?.borderWidth = 1.0;
+        view.layer?.borderColor = .black;
         
         NSEvent.addLocalMonitorForEvents(matching: .flagsChanged) {
             self.flagsChanged(with: $0)
