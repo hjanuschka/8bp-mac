@@ -15,7 +15,9 @@ final class Line: NSView {
         let myPath = NSBezierPath()
         myPath.move(to: mouse!)
         myPath.line(to: CGPoint(x: x, y: y))
-        myPath.lineWidth = 15.0;
+        //myPath.lineWidth = 15.0;
+        let color = NSColor.red;
+        color.set()
         myPath.stroke()
     }
     override func draw(_ dirtyRect: NSRect) {
