@@ -20,11 +20,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "eightbp-guides/ViewController.swift"
-            timestampString = "520873576.737057"
+            timestampString = "520931545.579629"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "137"
-            endingLineNumber = "137"
+            startingLineNumber = "147"
+            endingLineNumber = "147"
             landmarkName = "windowDidResize(_:)"
             landmarkType = "7">
          </BreakpointContent>

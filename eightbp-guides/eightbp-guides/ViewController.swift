@@ -52,6 +52,9 @@ class ViewController: NSViewController, NSWindowDelegate {
     var currentCenter: NSPoint = CGPoint(x:0, y:0);
     var Lines:Line?
     
+    private var settings: SettingsWindow!
+
+    
     override func flagsChanged(with event: NSEvent) {
         switch event.modifierFlags.intersection(.deviceIndependentFlagsMask) {
         case [.shift]:
@@ -129,6 +132,13 @@ class ViewController: NSViewController, NSWindowDelegate {
             self.flagsChanged(with: $0)
             return $0
         }
+        
+        //Settings Window
+        settings = SettingsWindow(windowNibName: "SettingsWindow")
+        settings.drawController=self
+        settings.showWindow(self)
+        settings.window?.level = Int(CGWindowLevelForKey(.floatingWindow))
+        
         
     }
     func windowDidResize(_ notification: Notification) {
