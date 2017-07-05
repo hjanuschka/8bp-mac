@@ -10,7 +10,7 @@ import Cocoa
 
 final class Line: NSView {
     var mouse: CGPoint?
-    
+    var BallSize: CGFloat = 20
     func drawLine(x: CGFloat, y: CGFloat) {
         let myPath = NSBezierPath()
         myPath.move(to: mouse!)
@@ -37,7 +37,7 @@ final class Line: NSView {
         self.drawLine(x: frame.size.width-10, y: frame.size.height-10);
         
         
-        let circle = NSBezierPath(ovalIn: NSRect(x: (mouse?.x)!-10, y: (mouse?.y)!-10, width: 20, height: 20))
+        let circle = NSBezierPath(ovalIn: NSRect(x: (mouse?.x)!-(BallSize/2), y: (mouse?.y)!-(BallSize/2), width: BallSize, height: BallSize))
         circle.stroke()
         circle.fill()
         
