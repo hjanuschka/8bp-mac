@@ -10,6 +10,7 @@
             <connections>
                 <outlet property="alwaysClickable" destination="OVF-G7-Ztn" id="LKa-6L-y25"/>
                 <outlet property="ballSize" destination="AUl-oY-paF" id="neW-dM-tou"/>
+                <outlet property="ballType" destination="hlb-Nb-sld" id="TsW-Ed-oy5"/>
                 <outlet property="window" destination="F0z-JX-Cv5" id="gIp-Ho-8D9"/>
             </connections>
         </customObject>
@@ -54,9 +55,9 @@
                         </textFieldCell>
                     </textField>
                     <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="zqx-zL-Oqh">
-                        <rect key="frame" x="14" y="144" width="81" height="32"/>
+                        <rect key="frame" x="8" y="144" width="93" height="32"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                        <buttonCell key="cell" type="push" title="Button" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="qTf-r4-gGL">
+                        <buttonCell key="cell" type="push" title="Re-Draw" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="qTf-r4-gGL">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                             <font key="font" metaFont="system"/>
                         </buttonCell>
@@ -64,6 +65,18 @@
                             <action selector="updateBallSize:" target="-2" id="9aI-IN-fdX"/>
                         </connections>
                     </button>
+                    <segmentedControl verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="qSk-9P-1Rl">
+                        <rect key="frame" x="195" y="231" width="266" height="20"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <segmentedCell key="cell" borderStyle="border" alignment="left" style="roundRect" trackingMode="selectOne" id="hlb-Nb-sld">
+                            <font key="font" metaFont="cellTitle"/>
+                            <segments>
+                                <segment label="Cue Ball" width="86" selected="YES"/>
+                                <segment label="Bank Start" width="86" tag="1"/>
+                                <segment label="Bank First" width="86"/>
+                            </segments>
+                        </segmentedCell>
+                    </segmentedControl>
                 </subviews>
             </view>
             <connections>

@@ -11,6 +11,12 @@ import Cocoa
 final class Line: NSView {
     var mouse: CGPoint?
     var BallSize: CGFloat = 20
+    var showBankShot = false
+    
+    var bankStart: CGPoint?
+    var bankFirstHit: CGPoint?
+    
+    
     func drawLine(x: CGFloat, y: CGFloat) {
         let myPath = NSBezierPath()
         myPath.move(to: mouse!)
@@ -22,19 +28,110 @@ final class Line: NSView {
     }
     override func draw(_ dirtyRect: NSRect) {
         
+        drawHoleLines();
+        drawBankShotLines();
+        
+        
+    }
+    func getAngle(fromPoint: CGPoint, toPoint: CGPoint) -> CGFloat {
+        let dx: CGFloat = fromPoint.x - toPoint.x
+        let dy: CGFloat = fromPoint.y - toPoint.y
+        let twoPi: CGFloat = 2 * CGFloat(Double.pi)
+        let radians: CGFloat = (atan2(dy, -dx) + twoPi).truncatingRemainder(dividingBy: twoPi)
+        return radians * 360 / twoPi
+    }
+
+    func drawBankShotLines() {
+        if(!showBankShot || bankFirstHit == nil || bankStart == nil) {
+            return;
+        }
+        
+        
+        
+        var screenMax = CGPoint(x: self.frame.width, y: self.frame.height)
+        var lastPoint:CGPoint = .zero;
+        
+        var slope:CGFloat = 1.0;
+
+        
+        if (bankFirstHit!.x != bankStart!.x) {
+            slope = (bankFirstHit!.y - bankStart!.y) / (bankFirstHit!.x - bankStart!.x);
+            lastPoint = CGPoint(x: screenMax.x, y: slope * (screenMax.x-bankFirstHit!.x)+bankFirstHit!.y)
+        } else {
+            slope = 0
+            lastPoint.x = bankFirstHit!.x;
+            lastPoint.y = screenMax.y;
+        
+        }
+        
+        
+        
+        
+        
+        
+        NSLog("Slope: %03.03f", slope);
+        NSLog("Last Point", NSStringFromPoint(lastPoint))
+        
+        let myPath = NSBezierPath()
+        myPath.move(to: bankStart!)
+        myPath.line(to: bankFirstHit!)
+        //myPath.lineWidth = 15.0;
+        let color = NSColor.red;
+        color.set()
+        myPath.stroke()
+
+        let extensionPath = NSBezierPath()
+        extensionPath.lineCapStyle = .squareLineCapStyle
+
+        extensionPath.move(to: bankFirstHit!)
+        extensionPath.line(to: lastPoint)
+        extensionPath.lineWidth = 15.0;
+        
+        
+        
+
+        
+        let color1 = NSColor.blue;
+        color1.set()
+        extensionPath.stroke()
+
+      
+        
+        
+        
+        /*
+        UIBezierPath *myPath = [UIBezierPath bezierPath];
+        [myPath moveToPoint: firstPoint];
+        [myPath addLineToPoint: secondPoint];
+        myPath.lineWidth = 10;
+        [[UIColor yellowColor]setStroke];
+        [myPath stroke];
+        
+        //this is the extension from the second point to the end of the screen
+        [myPath addLineToPoint: lastPoint];
+        [myPath stroke];
+        */
+        
+    }
+    
+    func drawHoleLines() {
+        let drawMargin:CGFloat = 10
+        let ajusteX:CGFloat = 15;
+        let ajusteY:CGFloat = 40;
+        
         //Left Bottom
-        self.drawLine(x: 10, y: 10);
+        self.drawLine(x: drawMargin, y: drawMargin);
         //Bottom Center
-        self.drawLine(x: frame.size.width/2, y: 0);
+        self.drawLine(x: frame.size.width/2-5, y: drawMargin);
         //Bottom Right
-        self.drawLine(x: frame.size.width-10, y: 10);
+        self.drawLine(x: frame.size.width-drawMargin, y: drawMargin);
         
         //Top Left
-        self.drawLine(x: 10, y: frame.size.height-10);
+        self.drawLine(x: drawMargin, y: frame.size.height-drawMargin);
         //Top Middle
-        self.drawLine(x: frame.size.width/2, y: frame.size.height);
+        self.drawLine(x: frame.size.width/2-5, y: frame.size.height-drawMargin);
         //Top Right
-        self.drawLine(x: frame.size.width-10, y: frame.size.height-10);
+        self.drawLine(x: frame.size.width - drawMargin, y: frame.size.height-drawMargin);
         
         
         let circle = NSBezierPath(ovalIn: NSRect(x: (mouse?.x)!-(BallSize/2), y: (mouse?.y)!-(BallSize/2), width: BallSize, height: BallSize))
@@ -96,8 +193,34 @@ class ViewController: NSViewController, NSWindowDelegate {
     override func mouseDown(with event: NSEvent) {
         let p = event.locationInWindow;
         NSLog("%@", NSStringFromPoint(p));
-        currentCenter = p;
-        Lines?.mouse = p;
+        
+        
+        // 0 == CUEBALL
+        // 1 == BANK START
+        // 2 == FIRST BANK HIT
+        if(settings.ballType.selectedSegment == 1) {
+            Lines?.showBankShot = true;
+            Lines?.bankStart = p;
+            
+        }
+        if(settings.ballType.selectedSegment == 2) {
+            Lines?.showBankShot = true;
+            Lines?.bankFirstHit = p;
+            
+            /*
+            if(p.y >= view.frame.size.height/2) {
+                Lines?.bankFirstHit = CGPoint(x: p.x, y: view.frame.size.height)
+            } else {
+                Lines?.bankFirstHit = CGPoint(x: p.x, y: 0)
+            }
+             */
+        }
+        if(settings.ballType.selectedSegment == 0) {
+            currentCenter = p;
+            Lines?.mouse = p;
+   
+        }
+        
         Lines?.needsDisplay=true;
     }
     

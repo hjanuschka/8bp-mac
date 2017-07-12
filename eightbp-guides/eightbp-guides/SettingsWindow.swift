@@ -11,6 +11,7 @@ import Cocoa
 class SettingsWindow: NSWindowController {
     @IBOutlet weak var alwaysClickable: NSButtonCell!
     @IBOutlet weak var ballSize: NSTextField!
+    @IBOutlet weak var ballType: NSSegmentedCell!
     var drawController:ViewController?
     @IBAction func clicky(_ sender: Any) {
         NSLog("xxx %ld", alwaysClickable.state);
